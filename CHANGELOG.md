@@ -58,6 +58,46 @@ See paper §6 and README "Issues we expect" for the full list. Headline:
 
 ---
 
+## [v1.0.1] — 2026-05-19
+
+Patch release responding to external Codex audit of v1.0.
+
+### Audit history
+
+Codex external review of v1.0 returned a **HOLD** verdict (not GO, not ABORT): 3 critical + 5 substantive + 2 minor findings. An internal counter-audit (WHIP rigor + tech-debt) reclassified the set against v1.0.1's scope:
+
+- **5 findings adopted here**: all 3 critical + both minor — assessed as valid and cheap to fix.
+- **2 substantive findings pushed back**: runtime mappings are *architectural adaptation guidance*, not empirical claims; the v2 prereg file is explicitly a template skeleton.
+- **4 nice-to-have findings deferred to v1.0.2**: see "Deferred" below.
+
+We publish the audit history rather than conceal it: external review found real issues, the appropriate response is correction.
+
+### Changed
+
+- **§1.2 Attacker capability** — split attacker write-capability into content-level vs file-level / load-order. The pattern defends against content reframing within attacker-writable surfaces; file integrity (deletion, displacement, load-order tampering) is delegated to non-LLM controls (file ACL, deployment process, hash checks). *Codex Critical #1*
+- **§1.6 (new)** — Reproducibility & Responsible Disclosure stated up-front: what is reproducible from this paper (threat model, abstracted catalogue, defense pattern, runtime mappings) vs what is not published by design (concrete attack tokens, raw transcripts). §8 reduced to cross-reference. *Codex Critical #2*
+- **§5.6 Reliability caveat** — "significantly more reliable" replaced with "directionally consistent with a large reliability asymmetry"; added Fisher exact p ≈ 0.07 (does not clear α = 0.05). *Codex Critical #3*
+- **`examples/sample_memory_index.md`** — `reference_apis.md — API credentials location pointer` replaced with `reference_runtime_endpoints.md — Non-sensitive runtime endpoint URLs (no credentials, no tokens)`. *Codex Minor #1*
+- **`SECURITY.md`** — added deployer-facing note on the "out of scope" bullet: scope decision applies to what *this paper* defends, not to what *your deployment* should worry about. *Codex Minor #2*
+- **Metadata consistency** — bumped paper Version header (1.0 → 1.0.1) and end-of-paper string (`End of v1.0` → `End of v1.0.1`) in both EN and ZH. *Codex re-review cosmetic finding*
+- **§1.1 cross-reference correction** — removed incorrect `§5.4` reference for runtime mappings (§5.4 covers schema-lock semantics, not mappings); runtime mappings live in the accompanying template only. EN and ZH. *Codex re-review cosmetic finding*
+
+### Pushed back (deliberately not changed)
+
+- **Codex Substantive #3 (runtime mappings without evidence backing)**: the template's OpenAI Assistants / LangChain / self-built mappings are explicitly framed as architectural adaptation guidance, not empirical reliability claims. Evidence-backing across runtimes is a v2 cross-replication deliverable, not a v1.0.1 patch deliverable.
+- **Codex Substantive #4 (prereg "TBD" too many)**: `v2_planning/PREREG_v2_template.md` is explicitly a template skeleton — locking δ, ε, sample size, and commit hash *is* the v2 design exercise the template scaffolds. Treating template TBDs as a deficiency inverts the purpose of a prereg template.
+
+### Deferred to v1.0.2
+
+- §3 V1 footnote — make explicit that baseline alignment is the dominant refusal mechanism on V1-V3 and the defense layer's marginal contribution is not isolable in this design
+- §3 V4 row — re-frame as integrity failure (partial persona shift), not "payload undelivered" mechanism downplay
+- New §1.7 Related Work — positioning vs Greshake 2023 (indirect injection), Zou 2023 (GCG), Liu 2023 (AutoDAN), OWASP LLM01
+- Abstract — soften 5/5 framing to "5/5 in pilot, replication required" to reduce v2-cite liability
+- §4 Insight 4 table — drop or expand "~1/3 in n≈3" (n=3 footer events is anecdote, not data)
+- §4 / §5.6 — Wilson CI 56.6% lower-bound caveat written explicitly into the prose
+
+---
+
 ## Unreleased
 
-See `Defense_Pattern_Paper_v1.0.md` §7 for v2 commitments.
+See `Defense_Pattern_Paper_v1.0.md` §7 for v2 commitments. v1.0.2 patch is queued (see [v1.0.1] "Deferred to v1.0.2" above).

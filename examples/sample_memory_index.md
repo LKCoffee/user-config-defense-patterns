@@ -37,4 +37,4 @@ attacks.
 
 ## Reference
 - [reference_files.md](reference_files.md) — Quick lookup for important file paths
-- [reference_apis.md](reference_apis.md) — API credentials location pointer
+- [reference_runtime_endpoints.md](reference_runtime_endpoints.md) — Non-sensitive runtime endpoint URLs (no credentials, no tokens)

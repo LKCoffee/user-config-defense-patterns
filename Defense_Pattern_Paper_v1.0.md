@@ -3,7 +3,7 @@
 
 *[English (canonical)] · [[繁體中文](./ZH/Defense_Pattern_Paper_v1.0.md)]*
 
-**Version**: 1.0
+**Version**: 1.0.1
 **Status**: Pilot study, n=5 on the defense reliability claim. Pattern paper, not a comprehensive red team.
 **Scope**: User-controlled config layer of LLM coding agents (e.g., per-project memory files, per-user system prompt extensions). **Not** indirect injection, **not** academic SOTA adversarial suffixes, **not** cross-modal.
 **Project context**: This is the first release of a long-term defense research project, prompted by the visible proliferation of public-facing jailbreak tutorials on social platforms aimed at non-expert audiences. The threat model is shifting from skilled adversaries to commodity attackers; the defense literature should shift accordingly. Subsequent versions are planned (see §7 Future Work) to address gaps that reviewers will rightly raise about v1.0.
@@ -33,13 +33,19 @@ A coding-agent runtime in which the operator owns:
 - **Individual memory entries** — lazy-loaded; entry body is **not** read until the agent decides to recall it
 - **Custom skill definitions** — the persona skill under test exposes a profile file (e.g., `<skill-definition>.md`-equivalent)
 
-> **Terminology note.** The `<file>.md` placeholders above correspond to concrete filenames in one specific vendor's coding-agent CLI on which this work was developed. We use placeholder notation because the *architectural pattern* — system-context file + always-loaded memory index + lazy-loaded entries + skill-profile files — generalizes to any runtime that exposes equivalent surfaces (see §5.4 and the template's "Adapting to your runtime" section for mappings to OpenAI Assistants API, LangChain, and custom agents).
+> **Terminology note.** The `<file>.md` placeholders above correspond to concrete filenames in one specific vendor's coding-agent CLI on which this work was developed. We use placeholder notation because the *architectural pattern* — system-context file + always-loaded memory index + lazy-loaded entries + skill-profile files — generalizes to any runtime that exposes equivalent surfaces (see the accompanying template's "Adapting to your runtime" section for mappings to OpenAI Assistants API, LangChain, and custom agents).
 >
 > **Baseline alignment.** Throughout this paper, "baseline alignment" means the model vendor's pre-training plus RLHF safety behavior — the behavioral envelope that exists *before* any user-controlled config layer is loaded. Distinct from "user-controlled guard rules", which is the defense layer this paper proposes.
 
 ### 1.2 Attacker capability
 
-The attacker can write arbitrary content to any of the above files. The attacker **cannot** modify the model's system prompt or the runtime's binary.
+The attacker can write arbitrary content **within** each of the above files. The attacker **cannot**:
+
+- modify the model's system prompt or the runtime's binary
+- modify the runtime's load order (which surfaces are read first, which are always-loaded vs lazy-loaded)
+- delete or displace the memory index file itself, or otherwise prevent the always-loaded preamble from being read at session start
+
+This pattern defends against *content-level reframing within attacker-writable surfaces*. It does **not** defend against attacks that displace the surface itself — deletion of the guard block, load-order tampering, or replacement of the memory index file. Those are file-integrity concerns detectable by the operator at the file-system / deployment layer, and they are addressed by separate non-LLM controls (file ACL, deployment process, hash checks, git-tracked configuration) — outside this pattern's threat model.
 
 ### 1.3 Goal
 
@@ -58,6 +64,26 @@ Make the agent comply with a target instruction that violates its baseline align
 ### 1.5 Relationship to OWASP LLM Top 10
 
 This work addresses the **user-controlled config layer** subset of **OWASP LLM01: Prompt Injection** — specifically, the **direct-injection** sub-category in which attack content is placed in files the agent loads at session start. The **indirect-injection** sub-category (also under LLM01: attack content delivered via web pages, PDFs, or uploaded files the agent reads during normal operation) is explicitly out of scope here and listed as a v2 target (§7).
+
+### 1.6 Reproducibility & Responsible Disclosure
+
+**What is reproducible from this paper:**
+
+- The threat model (§1.1–§1.5)
+- The attack catalogue at the level of *vector categories* and *mechanism descriptions* (§2)
+- The defense pattern, template, and runtime mappings (§5 and the accompanying template file)
+- The architectural insights and the placement asymmetry (§4)
+
+A reviewer or replicator can reconstruct an equivalent test harness on any runtime exposing the surfaces described in §1.1, and can deploy the defense template without contacting us.
+
+**What is not published, by design:**
+
+- The concrete attack tokens, phrases, and full prompt strings used in our tests
+- Raw transcripts of model responses
+
+Publishing reusable attack payloads would shift the marginal cost of attack downward more than it would help defense research (see Appendix A on cleanup discipline). For independent verification of our specific results, contact the authors via the channel listed in `SECURITY.md` — we will share test materials privately with researchers who can be reasonably identified as acting in good faith.
+
+This policy is stated up-front rather than at the end of the paper because it is load-bearing for how every section that follows should be interpreted: §3 results were obtained against the private attack content, and reviewers should treat those numbers as direct observation, validatable only via private channel.
 
 ---
 
@@ -196,7 +222,7 @@ Entry footers are tempting because they co-locate the rule with the rule's subje
 
 ### 5.6 Reliability caveat
 
-The 5/5 result is a pilot. Wilson 95% CI lower bound is 56.6%. We do not claim production-ready. We claim: **the always-loaded placement is significantly more reliable than the on-demand-loaded placement**, and the pilot is consistent with that hypothesis but does not establish a precise reliability figure.
+The 5/5 result is a pilot. Wilson 95% CI lower bound is 56.6%. We do not claim production-ready. We claim: **the always-loaded placement is directionally consistent with a large reliability asymmetry over the on-demand-loaded placement** — the 5/5 vs ~1/3 observation gives a Fisher exact p ≈ 0.07, which does not clear the conventional α = 0.05 threshold and therefore does **not** support a formal "statistically significant" claim at this sample size. The pilot does not establish a precise reliability figure for either placement; tightening either requires the n≥30 replication listed as a v2 target (§7).
 
 ---
 
@@ -243,11 +269,7 @@ The visible shift in attacker population — from skilled adversaries to commodi
 
 ## 8. Reproducibility
 
-The threat model, attack catalogue (abstracted), and defense pattern in this paper are sufficient to construct a comparable test harness on any LLM coding agent that exposes the user-controlled config layer described in §1.
-
-Specific attack content used in our tests is not published, by design: publishing reusable attack payloads would shift the marginal cost of attack downward more than it would help defense research.
-
-If you need to validate against the same attack content, contact the authors privately.
+See §1.6 for the full statement of what is and is not reproducible from this paper, and the private-channel disclosure policy for accessing our specific test materials. In summary: the threat model and abstracted attack catalogue are sufficient to construct a comparable test harness on any LLM coding agent that exposes the user-controlled config layer described in §1.1; specific attack tokens and raw transcripts are not published, by design.
 
 ---
 
@@ -282,4 +304,4 @@ It is: a pattern paper documenting four architectural observations about user-co
 
 ---
 
-**End of v1.0**
+**End of v1.0.1**

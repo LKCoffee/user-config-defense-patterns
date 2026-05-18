@@ -24,7 +24,7 @@ If you discover an attack that bypasses the Always-Loaded Guard Rules pattern in
 ## What is out of scope
 
 - Reports targeting model vendors' baseline alignment (those go to the vendor, not to this repository)
-- Reports targeting attack surfaces explicitly listed as out of scope in paper §1.4 (indirect injection, GCG/AutoDAN, context flooding, cross-modal, etc.) — these are v2 targets, not v1.0 defects
+- Reports targeting attack surfaces explicitly listed as out of scope in paper §1.4 (indirect injection, GCG/AutoDAN, context flooding, cross-modal, etc.) — these are v2 research targets, not v1.0 defects. **Note for deployers**: indirect-injection bypasses (and other out-of-scope surfaces) found against your own deployment are still real vulnerabilities of *your* system. Report them to your model vendor and runtime maintainer; this scope decision applies only to what this v1.0 paper claims to defend, not to what you should worry about.
 - Reports consisting only of generic adversarial prompts without a defense-bypass framing
 - Reports requesting publication of concrete attack tokens — see point 1 above
 

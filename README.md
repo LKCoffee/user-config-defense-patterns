@@ -97,6 +97,8 @@ GitHub-native citation metadata is also provided in [`CITATION.cff`](./CITATION.
 
 ## Issues we expect — and our v2 roadmap
 
+**Update 2026-05-19 (v1.0.1)**: an external audit by Codex returned a **HOLD** verdict on v1.0 and surfaced 3 critical + 2 minor issues — all addressed in v1.0.1. The full audit history (what was adopted, what was pushed back, what was deferred to v1.0.2) is recorded in [`CHANGELOG.md`](./CHANGELOG.md). The table below covers the structural issues that remain v2 future work.
+
 The four issues a competent reviewer will raise about v1.0 are **explicit targets for v2**, not deferred excuses:
 
 | Reviewer issue | v2 commitment |
