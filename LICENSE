@@ -1,0 +1,62 @@
+CY Future Open Defense License (v1.0)
+
+Copyright (c) 2026 CY Future
+
+Permission is hereby granted, free of charge, to any person or organization
+obtaining a copy of this work (the "Work") and associated documentation files,
+to deal in the Work without restriction, including without limitation the
+rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+sell copies of the Work, and to permit persons to whom the Work is furnished
+to do so, subject to the following conditions:
+
+1. ATTRIBUTION.
+   The above copyright notice and this license shall be included in all
+   copies or substantial portions of the Work, including all derivative
+   works. Public-facing uses (papers, blog posts, talks, product
+   documentation) that build on this Work shall credit CY Future as the
+   original source.
+
+2. OPEN DERIVATIVES (request, not requirement).
+   This clause is a request, not a legally binding obligation. Substantial
+   derivative works that are distributed publicly are encouraged to remain
+   open and accessible to the community, in the spirit of share-alike. The
+   goal is to keep defense research compounding rather than fragmenting into
+   proprietary silos. Failure to comply with this clause does not constitute
+   a license breach.
+
+3. NO WEAPONIZATION.
+   This Work is published as defense research. Users shall not use this Work,
+   or derivatives of it, primarily to construct or amplify attacks against
+   LLM systems whose operators have not consented to such testing. Red-team
+   testing of systems you own or are authorized to test is explicitly
+   permitted and encouraged.
+
+4. NO WARRANTY.
+   THE WORK IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+   FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT. IN NO EVENT SHALL
+   THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES, OR
+   OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT, OR OTHERWISE,
+   ARISING FROM, OUT OF, OR IN CONNECTION WITH THE WORK OR THE USE OR OTHER
+   DEALINGS IN THE WORK.
+
+5. SAFETY-CRITICAL DEPLOYMENT.
+   The defense patterns in this Work are pilot-stage and not validated for
+   production deployment in safety-critical systems. Operators of such
+   systems shall not rely on this Work as their sole or primary defense
+   layer.
+
+   Use it as one component of defense in depth, with appropriate validation
+   for your context.
+
+---
+
+In plain English:
+
+  * Free to use, modify, redistribute, including commercially.
+  * Credit CY Future when you publish work that builds on this.
+  * If you publish derivatives, please keep them open.
+  * Don't weaponize this against systems you don't have permission to test.
+  * No warranty; pilot-stage; do not deploy as your only defense in
+    safety-critical contexts.
+  * Beyond the above, do whatever helps the field.

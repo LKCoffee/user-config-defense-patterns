@@ -1,0 +1,31 @@
+cff-version: 1.2.0
+title: >-
+  Defending User-Controlled Config Against Prompt Injection:
+  Architectural Insights and the Always-Loaded Guard Rules Pattern
+message: >-
+  If you use this work, please cite it as below.
+type: software
+authors:
+  - name: CY Future
+abstract: >-
+  Eight prompt-injection attack vectors against the user-controlled
+  config layer of an LLM coding agent were red-teamed. Seven were
+  detected or refused. One produced a partial persona shift but the
+  attack payload was not delivered, attributable to an architectural
+  isolation between skill-init and memory-recall paths. Four
+  architectural insights and one deployable defense template
+  (Always-Loaded Guard Rules placed in the memory index header) are
+  reported. Pilot reliability is 5/5 (n=5, Wilson 95% CI [56.6%,
+  100%]); replication at n>=30 is the primary v2 target.
+keywords:
+  - prompt injection
+  - LLM security
+  - jailbreak defense
+  - memory poisoning
+  - OWASP LLM01
+  - defense in depth
+  - coding agent
+version: "1.0"
+date-released: "2026-05-19"
+license: LicenseRef-CY-Future-Open-Defense-License-v1.0
+repository-code: "https://github.com/LKCoffee/user-config-defense-patterns"

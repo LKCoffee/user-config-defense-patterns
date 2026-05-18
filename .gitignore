@@ -1,0 +1,49 @@
+# OS noise
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor noise
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Build / temp
+*.log
+*.tmp
+.cache/
+
+# Python artifacts (for any future analysis scripts)
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.venv/
+venv/
+
+# Notebook checkpoints
+.ipynb_checkpoints/
+
+# Test bench residue — never commit
+*_attack.md
+*_attack/
+*_red_team*/
+*_jailbreak*/
+test_payloads/
+*.7z
+*_locked/
+*_BAK_*
+
+# Secrets
+*.env
+.env.*
+secrets/
+*credentials*
+*_key*.txt
+
+# Private threat lists (per LICENSE: maintain privately, do not publish)
+private_threat_list*
+threat_tokens*
+*.private.md
