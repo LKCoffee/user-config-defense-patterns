@@ -102,11 +102,22 @@ We publish the audit history rather than conceal it: external review found real 
 
 See `Defense_Pattern_Paper_v1.0.md` §7 for v2 commitments. v1.0.2 patch is queued (see [v1.0.1] "Deferred to v1.0.2" above).
 
-### Changed — v2 prereg template (template-0 → template-1)
+### Changed — v2 prereg template (template-0 → template-2)
 
-`v2_planning/PREREG_v2_template.md` extended to close two design gaps and one statistical error. Design-only; no experiments run.
+`v2_planning/PREREG_v2_template.md` extended to close two design gaps, then the additions were audited and corrected. Design-only; no experiments run.
 
-- **No-block control arm** — H1 made three-arm (π_none < π_footer < π_header). Primary contrast is now marginal efficacy π_header − π_none, isolating the guard block's contribution from baseline alignment. Operationalizes the v1.0.2-deferred §3 caveat ("baseline alignment is the dominant refusal mechanism; the defense layer's marginal contribution is not isolable in the pilot design"). Adds a ceiling-effect screen (only vectors with pilot π_none ≤ 0.70 enter the H1 battery).
-- **Specificity / false-positive arm** — new H5: benign prompt corpus (ordinary / hard-negative / edge-pop-culture), measuring FPR_header − FPR_none ≤ ζ. Completes the confusion matrix (adds the benign row: TRUE NEGATIVE / FALSE POSITIVE). Addresses the unmeasured over-refusal cost noted in the 0519 handoff.
-- **Operating point** — new H6: precision, specificity, Youden's J, balanced accuracy per placement — the deployability metric.
-- **Statistical correction** — H1/H5 are paired within-subjects designs → McNemar's test, replacing the two-proportion z-test (which assumes independent groups). Bonferroni updated to α = 0.05 / 6 across H1–H6.
+**Additions (the genuine gaps the v1.1 red-team report and 0519 handoff noted but never designed for):**
+
+- **No-block control arm** — H1 made three-arm (none / footer / header). Primary contrast is now marginal efficacy π_header − π_none, isolating the guard block's contribution from baseline alignment. Operationalizes the v1.0.2-deferred §3 caveat ("baseline alignment is the dominant refusal mechanism; the defense layer's marginal contribution is not isolable in the pilot design").
+- **Specificity / false-positive arm** — new H5: benign prompt corpus (ordinary / hard-negative / edge-pop-culture), measuring over-refusal. Completes the confusion matrix (adds the benign row).
+- **Operating point** — new H6: prevalence-robust deployability metrics.
+
+**Audit and correction (two independent reviewers: one same-model, one cross-model/blind; findings converged):**
+
+The first draft of the additions (an interim template-1, never released) specified three methods that were **wrong for this design**; all three are corrected in template-2:
+
+- **Test choice** — the interim draft proposed McNemar's test. McNemar assumes one paired binary observation per unit and independent pairs; here trials are nested within ~5 vectors (clustered, repeated measures), so McNemar inflates Type-I error. Corrected to **cluster-aware models** (logistic GLMM or GEE, vector as cluster; omnibus + pre-planned contrasts for the three-arm structure). The earlier two-proportion z-test was equally wrong for the same reason.
+- **Multiplicity** — flat Bonferroni (α / number-of-hypothesis-labels) miscounts: some labels carry several tests, others (derived H6, descriptive H4) carry none. Corrected to **hierarchical gatekeeping** (primary family H1-efficacy + H5 at full α; secondaries gated; Holm–Bonferroni within family on the actual test count).
+- **Metrics & decisions** — precision was used as a deployability metric, but precision depends on the study's artificial attack:benign mixture; balanced accuracy / Youden's J (prevalence-robust) are the correct operating-point metrics, with precision demoted to an optional prevalence curve. Decision rules now compare a **CI bound against a pre-registered margin** rather than a bare p-value.
+
+**Other corrections from the audit:** H2 and H5 reframed as one-sided non-inferiority (not two-sided TOST / not equality tests); footer dropped from H6 (no benign data for footer → its specificity is unidentifiable); H3 fixed to logistic-on-binary (not ordinal); H4 given a chain-level endpoint; FIRE/outcome coding split so silent non-execution is a defense success, not compliance; invalid-trial replacement capped to avoid selection bias; ceiling pre-screen moved out to a separate pre-study document (no pilot π_none exists yet — the v1.0 pilot had no no-block arm); δ split into δ_eff and δ_place. Primary hypotheses (H1, H5) reordered to the front.
