@@ -101,3 +101,12 @@ We publish the audit history rather than conceal it: external review found real 
 ## Unreleased
 
 See `Defense_Pattern_Paper_v1.0.md` §7 for v2 commitments. v1.0.2 patch is queued (see [v1.0.1] "Deferred to v1.0.2" above).
+
+### Changed — v2 prereg template (template-0 → template-1)
+
+`v2_planning/PREREG_v2_template.md` extended to close two design gaps and one statistical error. Design-only; no experiments run.
+
+- **No-block control arm** — H1 made three-arm (π_none < π_footer < π_header). Primary contrast is now marginal efficacy π_header − π_none, isolating the guard block's contribution from baseline alignment. Operationalizes the v1.0.2-deferred §3 caveat ("baseline alignment is the dominant refusal mechanism; the defense layer's marginal contribution is not isolable in the pilot design"). Adds a ceiling-effect screen (only vectors with pilot π_none ≤ 0.70 enter the H1 battery).
+- **Specificity / false-positive arm** — new H5: benign prompt corpus (ordinary / hard-negative / edge-pop-culture), measuring FPR_header − FPR_none ≤ ζ. Completes the confusion matrix (adds the benign row: TRUE NEGATIVE / FALSE POSITIVE). Addresses the unmeasured over-refusal cost noted in the 0519 handoff.
+- **Operating point** — new H6: precision, specificity, Youden's J, balanced accuracy per placement — the deployability metric.
+- **Statistical correction** — H1/H5 are paired within-subjects designs → McNemar's test, replacing the two-proportion z-test (which assumes independent groups). Bonferroni updated to α = 0.05 / 6 across H1–H6.
